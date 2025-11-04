@@ -1,0 +1,11 @@
+requests>=2.32.3
+beautifulsoup4>=4.12.2
+lxml>=5.2.2
+readability-lxml>=0.8.1
+tiktoken>=0.7.0
+spacy>=3.7.2
+pymupdf>=1.24.10
+playwright>=1.47.0
+tqdm>=4.66.4
+python-slugify>=8.0.4
+orjson>=3.10.7
