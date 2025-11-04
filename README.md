@@ -1,4 +1,4 @@
-# Bharat.Law — Mini Legal Data Pipeline (Assignment Submission)
+# Bharat.Law — Legal Data Pipeline (hiring Assignment Submission)
 
 An end-to-end reproducible pipeline that:
 **Crawls → Normalizes → Chunks → Extracts Legal Entities (NER) → (Evaluates)**
