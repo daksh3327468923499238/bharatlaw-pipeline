@@ -1,39 +1,30 @@
-# Bharat.Law — Mini Legal Data Pipeline
+# Bharat.Law — Mini Legal Data Pipeline (Assignment Submission)
 
-An end‑to‑end pipeline that **crawls**, **parses & normalizes**, **chunks**, and runs **NER** on Indian legal web pages.  
-One‑command execution via `./run.sh` or `python main.py`.
+An end-to-end reproducible pipeline that:
+**Crawls → Normalizes → Chunks → Extracts Legal Entities (NER) → (Evaluates)**
 
-## Quick start
+---
+
+## Features Delivered
+
+| Stage | Description |
+|-------|-------------|
+| Crawler | Ethical BFS crawling with robots.txt compliance, retry logic, JS-domain whitelist |
+| Parser | Converts HTML/PDF → Markdown using Readability-lxml + PyMuPDF |
+| Chunker | 400–800 token chunks with ~80 token overlap using headings |
+| NER | Hybrid Legal NER: Regex + spaCy ORG detection |
+| Evaluation | Exact-span F1 score if gold dataset available |
+
+---
+
+## Quick Start
+
 ```bash
-git clone <your-fork>
-cd bharatlaw-pipeline
-./run.sh
-# or: python main.py --seed data/seed_urls.json --max-pages 25
-```
+python -m venv .venv && source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm || true
+python -m playwright install chromium || true
 
-> Place `gold_ner.jsonl` in `data/` to enable evaluation.
-
-## Design
-- **Crawler**: requests (static), optional Playwright for JS, robots.txt respected, retries + backoff, dedupe, depth≤3.
-- **Parsing**: HTML→Markdown with headings/lists preserved; PDFs via PyMuPDF with page numbers.
-- **Chunking**: 400–800 token target with 50–100 token overlap, split by headings & paragraphs.
-- **NER**: hybrid (regex rules for `SECTION_REF`, `DATE`, `MONEY` + spaCy for `ORG`, `ACT_NAME` with heuristics).
-- **Eval**: Precision/Recall/F1 against `gold_ner.jsonl` (exact match of label+span).
-
-## Outputs
-```
-raw/                # raw HTML/PDF
-normalized/         # markdown
-chunks/             # chunks.jsonl
-ner_outputs/        # annotations.jsonl
-crawl_index.jsonl
-normalized_index.jsonl
-```
-
-## Limitations & future work
-- JS rendering is domain‑gated to avoid cost; extend `--js-domains` list.
-- Evaluation uses exact span match; could add partial/character‑overlap scoring.
-- Chunk tokenization uses tiktoken if present; falls back to word-count proxy.
-- PDF layout retention is minimal; table preservation is best‑effort.
-```
-
+# Run pipeline
+python main.py --seed data/seed_urls.json --max-pages 10 --depth 2 --delay 1.0 --eval
