@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+raw/
+normalized/
+chunks/
+ner_outputs/
+crawl_index.jsonl
+normalized_index.jsonl
+playwright/.cache/
